@@ -1,7 +1,7 @@
 import "./App.css";
 import { Component } from "react";
 import Add from "./AddComponent/Add";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./AddComponent/Add.css";
 
 class App extends Component {
@@ -61,9 +61,9 @@ class App extends Component {
   };
 
 
-  editInput = (e) => {
+  editInput = (id,e) => {
     let temp = this.state.task;
-    temp.name = e.target.value;
+    temp[id].name = e.target.value;
     this.setState({
       task:temp
     });
@@ -93,6 +93,7 @@ class App extends Component {
           editClick={this.editTaskClick}
           editInput={this.editInput}
           saveInput={this.saveTaskClick}
+          getName={this.getName}
           state={this.state.task}
         />
       </div>

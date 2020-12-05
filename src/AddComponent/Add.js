@@ -9,7 +9,7 @@ const Add = (props) => {
           return (
             <div class="container">
               <div className="m-auto">
-                <input value={element.name} type="text" name="task" />
+                <h4>{element.name}</h4>
 
                 <button
                   className={element.buttonStyle}
@@ -31,13 +31,12 @@ const Add = (props) => {
             <div class="container">
               <div className="m-auto">
                 <input
-                  onChange={props.editInput}
+                  onChange={(e)=>props.editInput(element.id,e)}
                   type="text"
-                  name="task"
                 />
 
                 <button
-                  className={element.buttonStyle} 
+                  className={element.buttonStyle} name="task"
                   onClick={() => props.saveInput(element.id)}
                 >
                   {element.status}
