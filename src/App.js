@@ -1,8 +1,8 @@
 import "./App.css";
 import { Component } from "react";
 import Add from "./AddComponent/Add";
+import React, { useState, useEffect } from "react";
 import "./AddComponent/Add.css";
-
 
 class App extends Component {
   id = 0;
@@ -20,32 +20,64 @@ class App extends Component {
   inputAddHandler = (id, name) => {
     id = this.state.task.length;
     this.setState({
-      task: [...this.state.task, { id: id, name: name }],
+      task: [
+        ...this.state.task,
+        {
+          id: id,
+          name: name,
+          editing: false,
+          buttonStyle: "btn btn-warning",
+          status: "Edit",
+        },
+      ],
       input: "",
     });
   };
 
   deleteTask = (deleteTaskId) => {
     this.setState({
+      ...this.state,
       task: this.state.task.filter((item) => item.id !== deleteTaskId),
     });
   };
 
-  editTask(name, id) {
-    this.setState({
-      task: [
-        this.state.task.filter((item) => item.id !== id),
-        { id: id, name: name},
-      ],
-    });
-  }
+  editTaskClick = (editTaskId) => {
+    let temp = this.state.task;
+    if (temp[editTaskId].editing) {
+      temp[editTaskId].editing = false;
+      temp[editTaskId].buttonStyle = "btn btn-warning";
+      temp[editTaskId].status = "Edit";
+      this.setState({
+        task: temp,
+      });
+    } else {
+      temp[editTaskId].editing = true;
+      temp[editTaskId].buttonStyle = "btn btn-success";
+      temp[editTaskId].status = "Save";
+      this.setState({
+        task: temp,
+      });
+    }
+  };
 
-  dataChanged(data) {
-    // data = { description: "New validated text comes here" }
-    // Update your model from here
-    console.log(data)
-    this.setState({...data})
-}
+
+  editInput = (e) => {
+    let temp = this.state.task;
+    temp.name = e.target.value;
+    this.setState({
+      task:temp
+    });
+  };
+
+  saveTaskClick = (id) => {
+    let temp = this.state.task;
+    temp[id].editing = false;
+    temp[id].buttonStyle = "btn btn-warning";
+    temp[id].status = "Edit";
+    this.setState({
+      task: temp
+    })
+  }
 
   render() {
     console.log(this.state.task);
@@ -58,7 +90,10 @@ class App extends Component {
           after={this.state.input}
           output={this.state.task}
           delete={this.deleteTask}
-          edit={this.dataChanged}
+          editClick={this.editTaskClick}
+          editInput={this.editInput}
+          saveInput={this.saveTaskClick}
+          state={this.state.task}
         />
       </div>
     );
