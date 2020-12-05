@@ -9,7 +9,6 @@ class App extends Component {
   state = {
     task: [],
   };
-
   inputChangeHandler = (e) => {
     this.setState({
       ...this.state,
@@ -17,21 +16,27 @@ class App extends Component {
     });
   };
 
-  inputAddHandler = (id, name) => {
-    id = this.state.task.length;
-    this.setState({
-      task: [
-        ...this.state.task,
-        {
-          id: id,
-          name: name,
-          editing: false,
-          buttonStyle: "btn btn-warning",
-          status: "Edit",
-        },
-      ],
-      input: "",
-    });
+  inputAddHandler = (name) => {
+    this.id++;
+    if (this.state.input === "") {
+      this.setState({
+        task: [],
+      })
+    } else {
+      this.setState({
+        task: [
+          ...this.state.task,
+          {
+            id: this.id,
+            name: name,
+            editing: false,
+            buttonStyle: "btn btn-warning btn-block m-auto",
+            status: "Edit",
+          },
+        ],
+        input: "",
+      });
+    }
   };
 
   deleteTask = (deleteTaskId) => {
@@ -43,57 +48,69 @@ class App extends Component {
 
   editTaskClick = (editTaskId) => {
     let temp = this.state.task;
-    if (temp[editTaskId].editing) {
-      temp[editTaskId].editing = false;
-      temp[editTaskId].buttonStyle = "btn btn-warning";
-      temp[editTaskId].status = "Edit";
-      this.setState({
-        task: temp,
-      });
-    } else {
-      temp[editTaskId].editing = true;
-      temp[editTaskId].buttonStyle = "btn btn-success";
-      temp[editTaskId].status = "Save";
-      this.setState({
-        task: temp,
-      });
+    for (let i = 0; i < temp.length; i++) {
+      if (temp[i].editing) {
+        if (temp[i].id === editTaskId) {
+          temp[i].editing = false;
+          temp[i].buttonStyle = "btn btn-warning btn-block m-auto";
+          temp[i].status = "Edit";
+        }
+        this.setState({
+          task: temp,
+        });
+      } else {
+        if (temp[i].id === editTaskId) {
+          temp[i].editing = true;
+          temp[i].buttonStyle = "btn btn-success btn-block mr-2 text-center mx-auto";
+          temp[i].status = "Save";
+        }
+        this.setState({
+          task: temp,
+        });
+      }
     }
   };
 
-
-  editInput = (id,e) => {
+  editInput = (id, e) => {
     let temp = this.state.task;
-    temp[id].name = e.target.value;
-    this.setState({
-      task:temp
-    });
+    for (let i = 0; i < temp.length; i++) {
+      if (temp[i].id === id) {
+        temp[i].name = e.target.value;
+        this.setState({
+          task: temp,
+        });
+      }
+    }
   };
 
   saveTaskClick = (id) => {
     let temp = this.state.task;
-    temp[id].editing = false;
-    temp[id].buttonStyle = "btn btn-warning";
-    temp[id].status = "Edit";
-    this.setState({
-      task: temp
-    })
-  }
+    for (let i = 0; i < temp.length; i++) {
+      if (temp[i].id === id) {
+        temp[i].editing = false;
+        temp[i].buttonStyle = "btn btn-warning btn-block m-auto";
+        temp[i].status = "Edit";
+        this.setState({
+          task: temp,
+        });
+      }
+    }
+  };
 
   render() {
     console.log(this.state.task);
     return (
-      <div className="App">
-        <h1>To-do App</h1>
+      <div className="App container my-5">
+        <h1 class="mb-3">Simple React To-do App</h1>
         <Add
           changed={this.inputChangeHandler}
-          click={() => this.inputAddHandler(this.id, this.state.input)}
+          click={() => this.inputAddHandler(this.state.input)}
           after={this.state.input}
           output={this.state.task}
           delete={this.deleteTask}
           editClick={this.editTaskClick}
           editInput={this.editInput}
           saveInput={this.saveTaskClick}
-          getName={this.getName}
           state={this.state.task}
         />
       </div>

@@ -28,11 +28,21 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App{
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.2), 0 2.5rem 5rem 0 rgba(0,0,0,.1);
+  width: 60%;
+}
+
+.App #AddBtn{
+  width: 60%;
+}
+
+#AltBtn {
+  width: 30%;
+  margin-left: 0;
+  margin-top: 0;
+}
+
+#AltBtnEdit {
+  width: 30%;
 }
